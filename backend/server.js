@@ -27,6 +27,18 @@ async function initDB() {
   }
 }
 
+app.get("/api/transactions/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const transactions =
+      await sql`SELECT * FROM transactions WHERE user_id = ${userId}`;
+    res.status(200).json(transactions);
+  } catch (error) {
+    console.log(error.message.red);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 app.post("/api/transactions", async (req, res) => {
   try {
     // title,amount,category,userId
