@@ -57,6 +57,19 @@ app.post("/api/transactions", async (req, res) => {
   }
 });
 
+// delete transaction
+app.delete("/api/transactions/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const transaction =
+      await sql`DELETE FROM transactions WHERE id = ${id} RETURNING *`;
+    res.status(200).json(transaction[0]);
+  } catch (error) {
+    console.log(error.message.red);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 initDB().then(() => {
   server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`.yellow.bold);
