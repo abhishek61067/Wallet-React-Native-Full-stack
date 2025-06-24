@@ -2,8 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import colors from "colors";
 import { sql } from "./config/db.js";
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 
 const PORT = process.env.PORT || 5000;
 

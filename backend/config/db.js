@@ -1,11 +1,5 @@
 import { neon, neonConfig } from "@neondatabase/serverless";
-import dotenv from "dotenv";
-import fetch from "cross-fetch";
-
-dotenv.config();
-
-// 🔥 Set fetch manually for serverless Neon
-neonConfig.fetch = fetch;
+import "dotenv/config";
 
 console.log("database url: ", process.env.DATABASE_URL);
 
