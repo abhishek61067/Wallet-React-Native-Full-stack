@@ -3,11 +3,13 @@ import { createServer } from "http";
 import colors from "colors";
 import { sql } from "./config/db.js";
 import "dotenv/config";
+import rateLimiter from "./middleware/rateLimiter.js";
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 app.use(express.json());
+app.use(rateLimiter);
 const server = createServer(app);
 
 async function initDB() {
@@ -82,7 +84,7 @@ app.delete("/api/transactions/:id", async (req, res) => {
 });
 
 // transaction summary
-app.get("/api/summary/:userId", async (req, res) => {
+app.get("/api/transactions/summary/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
     const summary =
