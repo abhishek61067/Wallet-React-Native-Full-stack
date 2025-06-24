@@ -1,8 +1,9 @@
 import express from "express";
 import { createServer } from "http";
 import colors from "colors";
-import "dotenv/config"; // this loads .env automatically
 import { sql } from "./config/db.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
@@ -12,6 +13,8 @@ const server = createServer(app);
 
 async function initDB() {
   try {
+    console.log("Initializing database...".blue);
+    // await sql`SELECT 1`;
     await sql`CREATE TABLE IF NOT EXISTS transactions (
   id SERIAL PRIMARY KEY,
   user_id VARCHAR(255) NOT NULL,
@@ -73,6 +76,19 @@ app.delete("/api/transactions/:id", async (req, res) => {
       return res.status(404).json({ message: "Transaction not found" });
     }
     res.status(200).json(transaction[0]);
+  } catch (error) {
+    console.log(error.message.red);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// transaction summary
+app.get("/api/summary/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const summary =
+      await sql`SELECT category, SUM(amount) as total FROM transactions WHERE user_id = ${userId} GROUP BY category`;
+    res.status(200).json(summary);
   } catch (error) {
     console.log(error.message.red);
     res.status(500).json({ message: "Internal Server Error" });
