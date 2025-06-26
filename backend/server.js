@@ -12,10 +12,11 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(express.json());
 app.use(rateLimiter);
+
+app.use("/api/transactions", transactionRoutes);
 app.use("/", (req, res, next) => {
   res.send("Its working");
 });
-app.use("/api/transactions", transactionRoutes);
 
 const server = createServer(app);
 

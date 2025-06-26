@@ -1,3 +1,5 @@
+import { sql } from "../config/db.js";
+
 const getTransactions = async (req, res) => {
   try {
     const userId = req.params.userId;
