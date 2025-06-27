@@ -59,4 +59,11 @@ export const THEMES = {
 };
 
 // 👇 change this to switch theme
-export const COLORS = THEMES.forest;
+const COLOR = THEMES.purple;
+export const COLORS = {
+  ...COLOR,
+  muted: "#B0BEC5",
+  highlight: "#FFEB3B",
+  error: "#F44336",
+  success: "#4CAF50",
+};
