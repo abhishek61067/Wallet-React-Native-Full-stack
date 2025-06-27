@@ -5,6 +5,7 @@ import { Link, useRouter } from "expo-router";
 import { styles } from "@/assets/styles/auth.styles.js";
 import { COLORS } from "@/constants/colors";
 import { Image } from "expo-image";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -74,7 +75,7 @@ export default function SignUpScreen() {
         <Text style={styles.verificationTitle}>Verify your email</Text>
         {error ? (
           <View style={styles.errorBox}>
-            <Text style={styles.errorText}>{"Something went wrong"}</Text>
+            <Text style={styles.errorText}>{error.message}</Text>
           </View>
         ) : null}
         <TextInput
@@ -92,35 +93,47 @@ export default function SignUpScreen() {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <View style={styles.container}>
-        <Image
-          source={require("../../assets/images/revenue-i2.png")}
-          style={styles.illustration}
-        />
-        <Text>Sign up</Text>
-        <TextInput
-          autoCapitalize="none"
-          value={emailAddress}
-          placeholder="Enter email"
-          onChangeText={(email) => setEmailAddress(email)}
-        />
-        <TextInput
-          value={password}
-          placeholder="Enter password"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-        />
-        <TouchableOpacity onPress={onSignUpPress}>
-          <Text>Continue</Text>
-        </TouchableOpacity>
-        <View style={{ display: "flex", flexDirection: "row", gap: 3 }}>
-          <Text>Already have an account?</Text>
-          <Link href="/sign-in">
-            <Text>Sign in</Text>
-          </Link>
+    <KeyboardAwareScrollView>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <View style={styles.container}>
+          <Image
+            source={require("../../assets/images/revenue-i2.png")}
+            style={styles.illustration}
+          />
+          <Text style={styles.title}>Create Account</Text>
+          {error ? (
+            <View style={styles.errorBox}>
+              <Text style={styles.errorText}>{error.message}</Text>
+            </View>
+          ) : null}
+
+          <TextInput
+            style={[styles.input, error && styles.errorInput]}
+            value={emailAddress}
+            placeholder="Enter email"
+            placeholderTextColor={COLORS.muted}
+            onChangeText={(email) => setEmailAddress(email)}
+          />
+          <TextInput
+            style={[styles.input, error && styles.errorInput]}
+            value={password}
+            placeholder="Enter password"
+            placeholderTextColor={COLORS.muted}
+            secureTextEntry={true}
+            onChangeText={(password) => setPassword(password)}
+          />
+          <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
+            <Text style={styles.buttonText}>Sign up</Text>
+          </TouchableOpacity>
+
+          <View style={styles.footerContainer}>
+            <Text style={styles.footerText}>Already have an account?</Text>
+            <TouchableOpacity onPress={() => router.back()}>
+              <Text style={styles.linkText}>Sign in</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
