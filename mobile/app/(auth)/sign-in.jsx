@@ -2,6 +2,10 @@ import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import React from "react";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { styles } from "@/assets/styles/auth.styles.js";
+import { Image } from "expo-image";
+import { COLORS } from "@/constants/colors";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -9,6 +13,8 @@ export default function Page() {
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const [error, setError] = React.useState(null);
 
   // Handle the submission of the sign-in form
   const onSignInPress = async () => {
@@ -35,32 +41,51 @@ export default function Page() {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
+      // Set the error state to display the error message
+      setError(err.errors ? err.errors[0] : { message: "An error occurred" });
     }
   };
 
   return (
-    <View>
-      <Text>Sign in</Text>
-      <TextInput
-        autoCapitalize="none"
-        value={emailAddress}
-        placeholder="Enter email"
-        onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
-      />
-      <TextInput
-        value={password}
-        placeholder="Enter password"
-        secureTextEntry={true}
-        onChangeText={(password) => setPassword(password)}
-      />
-      <TouchableOpacity onPress={onSignInPress}>
-        <Text>Continue</Text>
-      </TouchableOpacity>
-      <View style={{ display: "flex", flexDirection: "row", gap: 3 }}>
-        <Link href="/sign-up">
-          <Text>Sign up</Text>
-        </Link>
+    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Image
+          source={require("../../assets/images/revenue-i4.png")}
+          style={styles.illustration}
+        />
+        <Text style={styles.title}>Welcome Back</Text>
+        {error ? (
+          <View style={styles.errorBox}>
+            <Text style={styles.errorText}>{error.message}</Text>
+          </View>
+        ) : null}
+        <TextInput
+          style={[styles.input, error && styles.errorInput]}
+          value={emailAddress}
+          placeholder="Enter email"
+          placeholderTextColor={COLORS.muted}
+          onChangeText={(email) => setEmailAddress(email)}
+        />
+        <TextInput
+          style={[styles.input, error && styles.errorInput]}
+          value={password}
+          placeholder="Enter password"
+          placeholderTextColor={COLORS.muted}
+          secureTextEntry={true}
+          onChangeText={(password) => setPassword(password)}
+        />
+        <TouchableOpacity style={styles.button} onPress={onSignInPress}>
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>Don't have an account?</Text>
+          <Link href="/sign-up" asChild>
+            <TouchableOpacity>
+              <Text style={styles.linkText}>Sign up</Text>
+            </TouchableOpacity>
+          </Link>
+        </View>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }

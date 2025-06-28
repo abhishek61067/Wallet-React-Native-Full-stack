@@ -59,7 +59,7 @@ export const THEMES = {
 };
 
 // 👇 change this to switch theme
-const COLOR = THEMES.purple;
+const COLOR = THEMES.coffee;
 export const COLORS = {
   ...COLOR,
   muted: "#B0BEC5",

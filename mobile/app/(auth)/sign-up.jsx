@@ -38,6 +38,7 @@ export default function SignUpScreen() {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
+      setError(err.errors ? err.errors[0] : { message: "An error occurred" });
     }
   };
 
@@ -65,6 +66,7 @@ export default function SignUpScreen() {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
+      setError(err.errors ? err.errors[0] : { message: "An error occurred" });
     }
   };
 
@@ -93,45 +95,43 @@ export default function SignUpScreen() {
   }
 
   return (
-    <KeyboardAwareScrollView>
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <View style={styles.container}>
-          <Image
-            source={require("../../assets/images/revenue-i2.png")}
-            style={styles.illustration}
-          />
-          <Text style={styles.title}>Create Account</Text>
-          {error ? (
-            <View style={styles.errorBox}>
-              <Text style={styles.errorText}>{error.message}</Text>
-            </View>
-          ) : null}
-
-          <TextInput
-            style={[styles.input, error && styles.errorInput]}
-            value={emailAddress}
-            placeholder="Enter email"
-            placeholderTextColor={COLORS.muted}
-            onChangeText={(email) => setEmailAddress(email)}
-          />
-          <TextInput
-            style={[styles.input, error && styles.errorInput]}
-            value={password}
-            placeholder="Enter password"
-            placeholderTextColor={COLORS.muted}
-            secureTextEntry={true}
-            onChangeText={(password) => setPassword(password)}
-          />
-          <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
-            <Text style={styles.buttonText}>Sign up</Text>
-          </TouchableOpacity>
-
-          <View style={styles.footerContainer}>
-            <Text style={styles.footerText}>Already have an account?</Text>
-            <TouchableOpacity onPress={() => router.back()}>
-              <Text style={styles.linkText}>Sign in</Text>
-            </TouchableOpacity>
+    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Image
+          source={require("../../assets/images/revenue-i2.png")}
+          style={styles.illustration}
+        />
+        <Text style={styles.title}>Create Account</Text>
+        {error ? (
+          <View style={styles.errorBox}>
+            <Text style={styles.errorText}>{error?.message}</Text>
           </View>
+        ) : null}
+
+        <TextInput
+          style={[styles.input, error && styles.errorInput]}
+          value={emailAddress}
+          placeholder="Enter email"
+          placeholderTextColor={COLORS.muted}
+          onChangeText={(email) => setEmailAddress(email)}
+        />
+        <TextInput
+          style={[styles.input, error && styles.errorInput]}
+          value={password}
+          placeholder="Enter password"
+          placeholderTextColor={COLORS.muted}
+          secureTextEntry={true}
+          onChangeText={(password) => setPassword(password)}
+        />
+        <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
+          <Text style={styles.buttonText}>Sign up</Text>
+        </TouchableOpacity>
+
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>Already have an account?</Text>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Text style={styles.linkText}>Sign in</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </KeyboardAwareScrollView>
