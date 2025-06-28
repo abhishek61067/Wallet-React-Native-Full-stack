@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { styles } from "@/assets/styles/auth.styles.js";
 import { Image } from "expo-image";
 import { COLORS } from "@/constants/colors";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -56,7 +57,11 @@ export default function Page() {
         <Text style={styles.title}>Welcome Back</Text>
         {error ? (
           <View style={styles.errorBox}>
-            <Text style={styles.errorText}>{error.message}</Text>
+            <Ionicons name="alert-circle" size={20} color={COLORS.expense} />{" "}
+            <Text style={styles.errorText}>{error?.message}</Text>
+            <TouchableOpacity onPress={() => setError(null)}>
+              <Ionicons name="close" size={20} color={COLORS.textLight} />{" "}
+            </TouchableOpacity>
           </View>
         ) : null}
         <TextInput
