@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { Alert } from "react-native";
 
-const API_URL = "http:// 192.168.254.44:5000/api/"; // Replace with your actual API URL
+const API_URL = "http://localhost/api/"; // Replace with your actual API URL
 
 export const useTransaction = (userId) => {
   const [loading, setLoading] = useState(false);
