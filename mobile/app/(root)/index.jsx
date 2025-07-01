@@ -4,6 +4,7 @@ import { Text, View } from "react-native";
 import { SignOutButton } from "@/components/SignOutButton";
 import { useTransaction } from "../../hooks/useTransaction";
 import { useEffect } from "react";
+import LoadingComponent from "../../components/LoadingComponent";
 
 export default function Page() {
   const { user } = useUser();
@@ -17,6 +18,10 @@ export default function Page() {
   console.log("user id:", user.id);
   console.log("transactions:", transactions);
   console.log("summary:", summary);
+
+  if (loading) {
+    return <LoadingComponent />;
+  }
 
   return (
     <View>

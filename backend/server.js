@@ -6,12 +6,22 @@ import "dotenv/config";
 import rateLimiter from "./src/middleware/rateLimiter.js";
 // Import routes
 import transactionRoutes from "./src/routes/transactionRoutes.js";
+import job from "./src/config/cron.js";
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+
+if (process.env.NODE_ENV === "production") job.start(); // Start the cron job if in production
+
 app.use(express.json());
 app.use(rateLimiter);
+
+app.use("/api/health", (req, res, next) => {
+  res.status(200).json({
+    status: "ok",
+  });
+});
 
 app.use("/api/transactions", transactionRoutes);
 app.use("/", (req, res, next) => {
