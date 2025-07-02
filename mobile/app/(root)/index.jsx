@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link, router, useRouter } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SignOutButton } from "@/components/SignOutButton";
 import { useTransaction } from "../../hooks/useTransaction";
 import { useEffect } from "react";
@@ -8,7 +8,8 @@ import LoadingComponent from "../../components/LoadingComponent";
 import { styles } from "@/assets/styles/home.styles.js";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
-import { BalanceCard } from "../../components/BalanceCard";
+import { BalanceCard } from "@/components/BalanceCard";
+import { TransactionItem } from "@/components/TransactionItem";
 
 export default function Page() {
   const { user } = useUser();
@@ -24,6 +25,18 @@ export default function Page() {
   console.log("user id:", user.id);
   console.log("transactions:", transactions);
   console.log("summary:", summary);
+
+  const onDelete = (id) => {
+    console.log("Deleting transaction with id:", id);
+    deleteTransaction(id)
+      .then(() => {
+        console.log("Transaction deleted successfully");
+        loadData(); // Reload data after deletion
+      })
+      .catch((error) => {
+        console.error("Error deleting transaction:", error);
+      });
+  };
 
   if (loading) {
     return <LoadingComponent />;
@@ -63,7 +76,18 @@ export default function Page() {
         </View>
         {/* summary */}
         <BalanceCard summary={summary} />
+        <View style={styles.transactionsHeaderContainer}>
+          <Text style={styles.sectionTitle}>Recent Transactions</Text>
+        </View>
       </View>
+      <FlatList
+        style={styles.transactionsList}
+        contentContainerStyle={styles.transactionsListContent}
+        data={transactions}
+        renderItem={({ item }) => (
+          <TransactionItem item={item} onDelete={onDelete} />
+        )}
+      />
     </View>
   );
 }

@@ -54,24 +54,21 @@ const deleteTransaction = async (req, res) => {
 const transactionSummary = async (req, res) => {
   try {
     const userId = req.params.userId;
-    // Fetch all transactions for the user
     const transactions =
       await sql`SELECT amount, category FROM transactions WHERE user_id = ${userId}`;
 
-    // Calculate totals
     let income = 0;
     let expenses = 0;
 
     transactions.forEach((tx) => {
-      // You can adjust this logic if you have a specific way to identify income vs expense
       if (tx.amount >= 0) {
         income += Number(tx.amount);
       } else {
-        expenses += Number(tx.amount); // expenses will be negative
+        expenses += Math.abs(Number(tx.amount));
       }
     });
 
-    const balance = income + expenses; // since expenses are negative
+    const balance = income - expenses;
 
     res.status(200).json({
       income,
