@@ -99,7 +99,7 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
   },
   balanceAmount: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: "bold",
     color: COLORS.text,
     marginBottom: 20,
@@ -122,7 +122,7 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
   },
   balanceStatAmount: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "600",
   },
   sectionTitle: {
