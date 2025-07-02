@@ -54,9 +54,30 @@ const deleteTransaction = async (req, res) => {
 const transactionSummary = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const summary =
-      await sql`SELECT category, SUM(amount) as total FROM transactions WHERE user_id = ${userId} GROUP BY category`;
-    res.status(200).json(summary);
+    // Fetch all transactions for the user
+    const transactions =
+      await sql`SELECT amount, category FROM transactions WHERE user_id = ${userId}`;
+
+    // Calculate totals
+    let income = 0;
+    let expenses = 0;
+
+    transactions.forEach((tx) => {
+      // You can adjust this logic if you have a specific way to identify income vs expense
+      if (tx.amount >= 0) {
+        income += Number(tx.amount);
+      } else {
+        expenses += Number(tx.amount); // expenses will be negative
+      }
+    });
+
+    const balance = income + expenses; // since expenses are negative
+
+    res.status(200).json({
+      income,
+      expenses,
+      balance,
+    });
   } catch (error) {
     console.log(error.message.red);
     res.status(500).json({ message: "Internal Server Error" });
