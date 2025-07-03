@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link, router, useRouter } from "expo-router";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SignOutButton } from "@/components/SignOutButton";
 import { useTransaction } from "../../hooks/useTransaction";
 import { useEffect } from "react";
@@ -10,6 +10,7 @@ import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { BalanceCard } from "@/components/BalanceCard";
 import { TransactionItem } from "@/components/TransactionItem";
+import NoTransactionsFound from "../../components/NoTransactionsFound";
 
 export default function Page() {
   const { user } = useUser();
@@ -27,15 +28,22 @@ export default function Page() {
   console.log("summary:", summary);
 
   const onDelete = (id) => {
-    console.log("Deleting transaction with id:", id);
-    deleteTransaction(id)
-      .then(() => {
-        console.log("Transaction deleted successfully");
-        loadData(); // Reload data after deletion
-      })
-      .catch((error) => {
-        console.error("Error deleting transaction:", error);
-      });
+    Alert.alert(
+      "Delete Transaction",
+      "Are you sure you want to delete this transaction?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            deleteTransaction(id);
+          },
+        },
+      ]
+    );
   };
 
   if (loading) {
@@ -87,6 +95,7 @@ export default function Page() {
         renderItem={({ item }) => (
           <TransactionItem item={item} onDelete={onDelete} />
         )}
+        ListEmptyComponent={<NoTransactionsFound />}
       />
     </View>
   );
