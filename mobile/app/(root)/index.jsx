@@ -1,9 +1,16 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link, router, useRouter } from "expo-router";
-import { Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SignOutButton } from "@/components/SignOutButton";
 import { useTransaction } from "../../hooks/useTransaction";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LoadingComponent from "../../components/LoadingComponent";
 import { styles } from "@/assets/styles/home.styles.js";
 import { Image } from "expo-image";
@@ -16,6 +23,7 @@ export default function Page() {
   const { user } = useUser();
   const { transactions, summary, loading, error, loadData, deleteTransaction } =
     useTransaction(user.id);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -26,6 +34,17 @@ export default function Page() {
   console.log("user id:", user.id);
   console.log("transactions:", transactions);
   console.log("summary:", summary);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await loadData();
+    } catch (err) {
+      console.error("Error refreshing data:", err);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   const onDelete = (id) => {
     Alert.alert(
@@ -46,7 +65,7 @@ export default function Page() {
     );
   };
 
-  if (loading) {
+  if (loading && !refreshing) {
     return <LoadingComponent />;
   }
 
@@ -96,6 +115,10 @@ export default function Page() {
           <TransactionItem item={item} onDelete={onDelete} />
         )}
         ListEmptyComponent={<NoTransactionsFound />}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </View>
   );
