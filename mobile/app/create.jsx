@@ -98,7 +98,7 @@ export default function CreateTransaction() {
       <View
         style={{
           height: 1,
-          backgroundColor: COLORS.textLight,
+          backgroundColor: COLORS.border,
           marginBottom: 16,
         }}
       ></View>

@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import { Provider as PaperProvider, DefaultTheme } from "react-native-paper";
 import { COLORS } from "@/constants/colors.js";
+import { StatusBar } from "expo-status-bar";
 
 const theme = {
   ...DefaultTheme,
@@ -26,6 +27,7 @@ export default function RootLayout() {
         <SafeScreen>
           <Slot />
         </SafeScreen>
+        <StatusBar style="dark" />
       </PaperProvider>
     </ClerkProvider>
   );
