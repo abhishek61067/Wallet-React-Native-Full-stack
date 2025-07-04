@@ -76,7 +76,14 @@ export default function CreateTransaction() {
     >
       <Appbar.Header style={{ backgroundColor: "#fff" }}>
         <Appbar.BackAction onPress={() => router.back()} />
-        <Appbar.Content title="New Transaction" />
+        <Appbar.Content
+          title="New Transaction"
+          titleStyle={{
+            fontSize: 20,
+            fontWeight: "bold",
+            color: COLORS.primary,
+          }}
+        />
         <Button
           mode="text"
           onPress={handleCreate}
@@ -87,21 +94,38 @@ export default function CreateTransaction() {
           Save
         </Button>
       </Appbar.Header>
+      {/* horizontal bar */}
+      <View
+        style={{
+          height: 1,
+          backgroundColor: COLORS.textLight,
+          marginBottom: 16,
+        }}
+      ></View>
       <ScrollView contentContainerStyle={styles.content}>
         {/* Expense/Income Toggle */}
         <View style={styles.toggleRow}>
           <Chip
-            icon={({ color, size }) => (
-              <Ionicons
-                name="arrow-down"
-                size={size}
-                color={COLORS.textLight}
-              />
+            icon={({ size }) => (
+              <View
+                style={{
+                  width: size,
+                  height: size,
+                  borderRadius: size / 2,
+                  backgroundColor: COLORS.expense,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Ionicons name="arrow-down" size={size * 0.6} color="#fff" />
+              </View>
             )}
             selected={isExpense}
             style={[
               styles.toggleChip,
+
               { backgroundColor: COLORS.white, borderColor: COLORS.textLight },
+              { borderWidth: 1, borderColor: COLORS.border }, // <-- set your border color here
               isExpense && { backgroundColor: COLORS.primary },
             ]}
             textStyle={{ color: isExpense ? "#fff" : COLORS.text }}
@@ -110,13 +134,26 @@ export default function CreateTransaction() {
             Expense
           </Chip>
           <Chip
-            icon={({ color, size }) => (
-              <Ionicons name="arrow-up" size={size} color={COLORS.textLight} />
+            icon={({ size }) => (
+              <View
+                style={{
+                  width: size,
+                  height: size,
+                  borderRadius: size / 2,
+                  backgroundColor: !isExpense ? COLORS.income : COLORS.income,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Ionicons name="arrow-up" size={size * 0.6} color="#fff" />
+              </View>
             )}
             selected={!isExpense}
             style={[
               styles.toggleChip,
               { backgroundColor: COLORS.white, borderColor: COLORS.textLight },
+              { borderWidth: 1, borderColor: COLORS.border }, // <-- set your border color here
+
               !isExpense && { backgroundColor: COLORS.primary },
             ]}
             textStyle={{ color: !isExpense ? "#fff" : COLORS.text }}
@@ -125,18 +162,46 @@ export default function CreateTransaction() {
             Income
           </Chip>
         </View>
-
         {/* Amount Input */}
-        <TextInput
-          label="Amount"
-          mode="outlined"
-          left={<TextInput.Icon icon="cash" />}
-          value={amount}
-          onChangeText={setAmount}
-          keyboardType="numeric"
-          style={styles.input}
-        />
-
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginBottom: 16,
+            marginTop: 8,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 32,
+              fontWeight: "bold",
+              color: COLORS.primary,
+              marginRight: 4,
+            }}
+          >
+            $
+          </Text>
+          <TextInput
+            value={amount}
+            onChangeText={setAmount}
+            placeholder="0.00"
+            placeholderTextColor={COLORS.textLight}
+            keyboardType="numeric"
+            style={{
+              fontSize: 32,
+              fontWeight: "light",
+              color: COLORS.textLight,
+              backgroundColor: "transparent",
+              borderWidth: 0,
+              flex: 1,
+              paddingVertical: 0,
+            }}
+            underlineColor="transparent"
+            activeUnderlineColor="transparent"
+            selectionColor={COLORS.primary}
+            mode="flat"
+          />
+        </View>
         {/* Title Input */}
         <TextInput
           label="Transaction Title"
@@ -144,11 +209,31 @@ export default function CreateTransaction() {
           value={title}
           onChangeText={setTitle}
           style={styles.input}
-          left={<TextInput.Icon icon="pencil" />}
+          left={<TextInput.Icon icon="pencil" color={COLORS.primary} />}
+          theme={{
+            colors: {
+              primary: COLORS.primary, // active/focused border color
+              outline: COLORS.border, // default border color
+            },
+          }}
         />
-
         {/* Category Selection */}
-        <Text style={styles.categoryLabel}>Category</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginBottom: 8,
+            marginTop: 8,
+          }}
+        >
+          <Ionicons
+            name="pricetag"
+            size={20}
+            color={COLORS.primary}
+            style={{ marginRight: 6 }}
+          />
+          <Text style={styles.categoryLabel}>Category</Text>
+        </View>{" "}
         <View style={styles.categoriesContainer}>
           {CATEGORIES.map((cat) => (
             <Chip
@@ -165,7 +250,7 @@ export default function CreateTransaction() {
                 styles.categoryChip,
                 {
                   backgroundColor: COLORS.white,
-                  borderColor: COLORS.textLight,
+                  borderColor: COLORS.border,
                 },
                 category === cat.name && { backgroundColor: COLORS.primary },
               ]}
