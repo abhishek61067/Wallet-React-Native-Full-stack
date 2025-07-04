@@ -18,6 +18,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { BalanceCard } from "@/components/BalanceCard";
 import { TransactionItem } from "@/components/TransactionItem";
 import NoTransactionsFound from "../../components/NoTransactionsFound";
+import { capitalizeFirstLetter } from "./../../utils/capitalizeFirstLetter";
 
 export default function Page() {
   const { user } = useUser();
@@ -83,7 +84,9 @@ export default function Page() {
             <View style={styles.welcomeContainer}>
               <Text style={styles.welcomeText}>Welcome</Text>
               <Text style={styles.usernameText}>
-                {user?.emailAddresses[0]?.emailAddress.split(".")[0]}
+                {capitalizeFirstLetter(
+                  user?.emailAddresses[0]?.emailAddress.split(".")[0]
+                )}
               </Text>
             </View>
           </View>

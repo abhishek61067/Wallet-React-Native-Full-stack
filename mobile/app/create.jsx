@@ -233,7 +233,7 @@ export default function CreateTransaction() {
             style={{ marginRight: 6 }}
           />
           <Text style={styles.categoryLabel}>Category</Text>
-        </View>{" "}
+        </View>
         <View style={styles.categoriesContainer}>
           {CATEGORIES.map((cat) => (
             <Chip
