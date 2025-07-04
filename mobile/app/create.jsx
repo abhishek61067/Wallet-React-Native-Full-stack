@@ -95,7 +95,8 @@ export default function CreateTransaction() {
             selected={isExpense}
             style={[
               styles.toggleChip,
-              isExpense && { backgroundColor: COLORS.expense },
+              { backgroundColor: COLORS.white, borderColor: COLORS.textLight },
+              isExpense && { backgroundColor: COLORS.primary },
             ]}
             textStyle={{ color: isExpense ? "#fff" : COLORS.text }}
             onPress={() => setIsExpense(true)}
@@ -107,7 +108,8 @@ export default function CreateTransaction() {
             selected={!isExpense}
             style={[
               styles.toggleChip,
-              !isExpense && { backgroundColor: COLORS.income },
+              { backgroundColor: COLORS.white, borderColor: COLORS.textLight },
+              !isExpense && { backgroundColor: COLORS.primary },
             ]}
             textStyle={{ color: !isExpense ? "#fff" : COLORS.text }}
             onPress={() => setIsExpense(false)}
@@ -147,6 +149,10 @@ export default function CreateTransaction() {
               selected={category === cat.name}
               style={[
                 styles.categoryChip,
+                {
+                  backgroundColor: COLORS.white,
+                  borderColor: COLORS.textLight,
+                },
                 category === cat.name && { backgroundColor: COLORS.primary },
               ]}
               textStyle={{
