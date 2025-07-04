@@ -41,7 +41,7 @@ export default function CreateTransaction() {
     }
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_URL}/transactions`, {
+      const response = await fetch(`${API_URL}transactions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -130,7 +130,7 @@ export default function CreateTransaction() {
         <TextInput
           label="Amount"
           mode="outlined"
-          left={<TextInput.Affix text="$" />}
+          left={<TextInput.Icon icon="cash" />}
           value={amount}
           onChangeText={setAmount}
           keyboardType="numeric"
