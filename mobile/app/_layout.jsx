@@ -22,11 +22,11 @@ const theme = {
 export default function RootLayout() {
   return (
     <ClerkProvider tokenCache={tokenCache}>
-      {/* <PaperProvider theme={theme}> */}
-      <SafeScreen>
-        <Slot />
-      </SafeScreen>
-      {/* </PaperProvider> */}
+      <PaperProvider theme={theme}>
+        <SafeScreen>
+          <Slot />
+        </SafeScreen>
+      </PaperProvider>
     </ClerkProvider>
   );
 }
