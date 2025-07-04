@@ -91,7 +91,13 @@ export default function CreateTransaction() {
         {/* Expense/Income Toggle */}
         <View style={styles.toggleRow}>
           <Chip
-            icon="arrow-down"
+            icon={({ color, size }) => (
+              <Ionicons
+                name="arrow-down"
+                size={size}
+                color={COLORS.textLight}
+              />
+            )}
             selected={isExpense}
             style={[
               styles.toggleChip,
@@ -104,7 +110,9 @@ export default function CreateTransaction() {
             Expense
           </Chip>
           <Chip
-            icon="arrow-up"
+            icon={({ color, size }) => (
+              <Ionicons name="arrow-up" size={size} color={COLORS.textLight} />
+            )}
             selected={!isExpense}
             style={[
               styles.toggleChip,
@@ -145,7 +153,13 @@ export default function CreateTransaction() {
           {CATEGORIES.map((cat) => (
             <Chip
               key={cat.id}
-              icon={cat.icon}
+              icon={({ color, size }) => (
+                <Ionicons
+                  name={cat.icon}
+                  size={size}
+                  color={COLORS.textLight}
+                />
+              )}
               selected={category === cat.name}
               style={[
                 styles.categoryChip,
